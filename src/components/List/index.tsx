@@ -57,7 +57,7 @@ export const List = () => {
     fetchData(url + `&offset=${index * limit}`)
       .then((res) => {
         setCharacters((prevItems) => [...prevItems, ...res]);
-        res.length > 0 ? setHasMore(true) : setHasMore(false);
+        res?.length > 0 ? setHasMore(true) : setHasMore(false);
       })
       .catch((err) => console.log(err));
     setIndex((prevIndex) => prevIndex + 1);
@@ -72,7 +72,7 @@ export const List = () => {
   }, [url]);
 
   useEffect(() => {
-    if (name.length > 0) setUrl(characterListUrl + `&nameStartsWith=${name}`);
+    if (name?.length > 0) setUrl(characterListUrl + `&nameStartsWith=${name}`);
     else setUrl(characterListUrl);
   }, [name]);
 
@@ -83,9 +83,9 @@ export const List = () => {
           src={marvelLogo}
           alt="Marvel logo"
           onClick={() => {
-            fetchData(characterListUrl).then((response: any) =>
-              setCharacters(response)
-            );
+            fetchData(characterListUrl).then((response: any) => {
+              setCharacters(response);
+            });
           }}
         />
         <Favourite onClick={viewFavourites}>
@@ -94,11 +94,11 @@ export const List = () => {
             src={heartFilledIcon}
             alt="Favourite Icon"
           />
-          <FavouriteCount>{state.favourites.length}</FavouriteCount>
+          <FavouriteCount>{state.favourites?.length}</FavouriteCount>
         </Favourite>
       </Header>
       <InfiniteScroll
-        dataLength={characters.length}
+        dataLength={characters?.length}
         next={fetchMoreData}
         hasMore={hasMore}
         loader={<div></div>}
@@ -111,7 +111,7 @@ export const List = () => {
               onChange={(e) => setName(e.target.value)}
             ></SearchInput>
           </SearchInputWrapper>
-          {!isLoading && <label>{characters.length} RESULTS</label>}
+          {!isLoading && <label>{characters?.length} RESULTS</label>}
         </SearchWrapper>
         {isLoading ? (
           <Loader></Loader>
@@ -119,7 +119,7 @@ export const List = () => {
           <>
             <CharacterList>
               {characters.map((character) => (
-                <CharacterCard>
+                <CharacterCard key={character.id}>
                   <CharacterImg
                     src={
                       character.thumbnail.path +

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { apiKey, apiKeyUrl, baseUrl } from "../../marvelApi.config";
+import { apiKeyUrl, baseUrl } from "../../marvelApi.config";
 import { Favourite, FavouriteCount, Header } from "../../styles";
 import heartIcon from "../../assets/Heart Icon.png";
 import heartFilledIcon from "../../assets/Heart filled icon.png";
@@ -30,6 +30,7 @@ export const Details = () => {
 
   const characterDataUrl = `${baseUrl}/${state.id}?${apiKeyUrl}`;
   const characterComicUrl = `${baseUrl}/${state.id}/comics?${apiKeyUrl}`;
+
   useEffect(() => {
     setIsLoading(true);
     fetchData(characterDataUrl).then((response) =>
@@ -39,7 +40,7 @@ export const Details = () => {
       setIsLoading(false);
       setCharacterComicData(response);
     });
-  }, []);
+  }, [characterDataUrl, characterComicUrl]);
 
   return (
     <>
@@ -55,7 +56,7 @@ export const Details = () => {
             src={heartFilledIcon}
             alt="Favourite Icon"
           />
-          <FavouriteCount>{state.favourites.length}</FavouriteCount>
+          <FavouriteCount>{state.favourites?.length}</FavouriteCount>
         </Favourite>
       </Header>
       {isLoading ? (

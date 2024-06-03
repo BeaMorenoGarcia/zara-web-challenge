@@ -61,7 +61,7 @@ export const CharacterNameWrapper = styled.div`
   }
 `;
 
-export const CharacterName = styled.text`
+export const CharacterName = styled.label`
   font-size: 14px;
   font-weight: 400;
   line-height: 16.41px;
