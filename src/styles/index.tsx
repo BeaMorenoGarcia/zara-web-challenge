@@ -9,6 +9,9 @@ export const GlobalStyle = createGlobalStyle`
     body, html, #root {
         height: 100%;
         font-family: -apple-system, Ubuntu , BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;;
+        @media (min-width: 320px) and (max-width: 480px) { 
+            width: auto;
+        }
     }
 `;
 
@@ -19,7 +22,7 @@ export const Header = styled.div`
   padding: 16px 48px 16px 48px;
   display: flex;
   align-items: center;
-  img {
+  img {   
     height: fit-content;
     cursor: pointer;
   }

@@ -5,7 +5,6 @@ export const SearchWrapper = styled.div`
   padding: 12px 48px 12px 48px;
   gap: 12px;
   display: inline-block;
-  width: 100%;
 `;
 
 export const SearchInputWrapper = styled.div`

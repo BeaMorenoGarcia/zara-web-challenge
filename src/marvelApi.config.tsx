@@ -1,10 +1,19 @@
 import md5 from "md5";
 
+const publicKey = process.env.REACT_APP_PUBLIC_KEY || "";
+const privateKey = process.env.REACT_APP_PRIVATE_KEY || "";
+const timestamp = process.env.REACT_APP_TIMESTAMP || "";
+
 export const apiKey = {
-  Public: "49f3879f5436855a4523742492cba08b",
-  Private: "d029af2d664a995f1f1df472fdce9bc7caec27cd",
-  Timestamp: "1",
-  Hash: md5(
-    "1d029af2d664a995f1f1df472fdce9bc7caec27cd49f3879f5436855a4523742492cba08b"
-  ),
+  public: publicKey,
+  private: privateKey,
+  timestamp: timestamp,
+  hash: md5(timestamp + privateKey + publicKey),
 };
+
+
+export const limit = 50;
+export const baseUrl = `http://gateway.marvel.com/v1/public/characters`
+export const apiKeyUrl = `ts=${apiKey.timestamp}&apikey=${apiKey.public}&hash=${apiKey.hash}`;
+export const limitUrl = `&limit=${limit}`;
+export const characterListUrl = `${baseUrl}?${apiKeyUrl}&limit=${limit}`

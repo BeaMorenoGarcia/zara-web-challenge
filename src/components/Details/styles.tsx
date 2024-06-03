@@ -6,11 +6,22 @@ export const CharacterResumeWrapper = styled.div`
   background-color: black;
   display: flex;
   justify-content: center;
+  @media (min-width: 320px) and (max-width: 480px) {
+    display: block;
+    height: auto;
+    padding: 0;
+  }
 `;
 
 export const CharacterImg = styled.img`
   width: 320px;
   height: 320px;
+  @media (min-width: 320px) and (max-width: 480px) {
+    display: block;
+    height: -webkit-fill-available;
+    width: -webkit-fill-available;
+    padding: 0;
+  }
 `;
 
 export const CharacterInfo = styled.div`
@@ -18,6 +29,9 @@ export const CharacterInfo = styled.div`
   display: grid;
   align-content: center;
   min-width: 640px;
+  @media (min-width: 320px) and (max-width: 480px) {
+    min-width: 0;
+  }
 `;
 
 export const CharacterName = styled.label`
@@ -36,6 +50,20 @@ export const CharacterName = styled.label`
   }
 `;
 
+export const ComicsTitle = styled.label`
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 46.88px;
+  text-align: left;
+  padding: 16px 16px 24px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  @media (min-width: 320px) and (max-width: 480px) {
+    padding: 0px 8px;
+  }
+`;
+
 export const CharacterDescription = styled.label`
   font-weight: 400;
   font-size: 16px;
@@ -49,6 +77,9 @@ export const CharacterDescription = styled.label`
 
 export const ComicWrapper = styled.div`
   padding: 0px 48px 0px 48px;
+  @media (min-width: 320px) and (max-width: 480px) {
+    padding: 0px;
+  }
 `;
 
 export const ComicCarrousel = styled.div`
