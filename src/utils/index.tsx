@@ -1,12 +1,9 @@
 import axios from "axios";
-import { apiKey } from "../marvelApi.config";
 
-export const fetchData = async () => {
+export const fetchData = async (url: string) => {
   try {
-    const response = await axios.get(
-      `http://gateway.marvel.com/v1/public/characters?apiKey=${apiKey.Public}`
-    );
-    return response.data;
+    const response = await axios.get(url);
+    return response.data.data.results;
   } catch (error) {
     console.error("Error fetching data:", error);
   }

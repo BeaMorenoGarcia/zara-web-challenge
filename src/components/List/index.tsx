@@ -18,6 +18,7 @@ import heartIcon from "../../assets/Heart icon.png";
 import marvelLogo from "../../assets/Marvel logo.png";
 import { Header } from "../../styles";
 import { useDispatch } from "react-redux";
+import { fetchData } from "../../utils";
 
 export const List = () => {
   const navigate = useNavigate();
@@ -25,15 +26,6 @@ export const List = () => {
   const [characters, setCharacters] = useState<any[]>([]);
   const [name, setName] = useState<string>("");
   const baseUrl = `http://gateway.marvel.com/v1/public/characters?ts=${apiKey.Timestamp}&apikey=${apiKey.Public}&hash=${apiKey.Hash}`;
-
-  const fetchData = async (url: string) => {
-    try {
-      const response = await axios.get(url);
-      setCharacters(response.data.data.results);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
 
   function handleClick(characterId: string) {
@@ -43,8 +35,8 @@ export const List = () => {
 
 
   useEffect(() => {
-    if (name.length) fetchData(baseUrl + `&nameStartsWith=${name}`);
-    else fetchData(baseUrl);
+    if (name.length) fetchData(baseUrl + `&nameStartsWith=${name}`).then((response: any) => setCharacters(response));
+    else fetchData(baseUrl).then((response: any) => setCharacters(response));
   }, [name]);
 
   return (
