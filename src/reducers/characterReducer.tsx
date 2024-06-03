@@ -1,23 +1,29 @@
 interface CharacterState {
   id: number;
-  name?: string;
-  photoURL?: string;
+  favourites: number[];
 }
 
 const initialState: CharacterState = {
   id: -1,
+  favourites: []
 };
 
 const characterReducer = (
-  state = initialState,
-  action: { type: string; payload: CharacterState }
+  state: CharacterState = initialState,
+  action: { type: string; payload: any}
 ): CharacterState => {
   switch (action.type) {
-    case "CHANGE":
+    case "SELECT":
       return {
         ...state,
-        // TO-DO: Action para cambiar character seleccionado
+        id: action.payload.id
       };
+    case "FAVOURITES": {
+      return {
+        ...state,
+        favourites: action.payload.favourites
+      }
+    }
     default:
       return state;
   }
