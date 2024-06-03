@@ -28,7 +28,7 @@ const characterReducer = (
     case "SELECT":
       return {
         ...state,
-        id: action.payload.id
+        id: action.payload
       };
     case "FAVOURITES": {
       return {
