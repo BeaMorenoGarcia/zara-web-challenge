@@ -14,25 +14,41 @@ import {
 } from "./styles";
 import InfiniteScroll from "react-infinite-scroll-component";
 import searchIcon from "../../assets/Search button.png";
-import heartIcon from "../../assets/Heart icon.png";
+import heartIcon from "../../assets/Heart Icon.png";
+import heartFilledIcon from "../../assets/Heart filled icon.png";
 import marvelLogo from "../../assets/Marvel logo.png";
 import { Header } from "../../styles";
-import { useDispatch } from "react-redux";
 import { fetchData } from "../../utils";
+import { useCharacter } from "../../reducers";
 
 export const List = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const { state, dispatch } = useCharacter();
   const [characters, setCharacters] = useState<any[]>([]);
   const [name, setName] = useState<string>("");
   const baseUrl = `http://gateway.marvel.com/v1/public/characters?ts=${apiKey.Timestamp}&apikey=${apiKey.Public}&hash=${apiKey.Hash}`;
 
 
-  function handleClick(characterId: string) {
-    dispatch({type: "SELECT", payload: {id: characterId}})
+  const viewDetails = (characterId: string) => {
+    dispatch({type: "SELECT", payload: characterId})
     navigate("/details");
   }
 
+  const viewFavourites = () => {
+    setCharacters(characters.filter(character => state.favourites.includes(character.id)));
+  }
+
+  const setFavourite = (id: string) => {
+    const favourite = [...state.favourites];
+    if(favourite.includes(id)) {
+      const index = favourite.indexOf(id);
+      favourite.splice(index, 1)
+    }
+    else {
+      favourite.push(id);
+    }
+    dispatch({type: 'FAVOURITES', payload: favourite})
+  }
 
   useEffect(() => {
     if (name.length) fetchData(baseUrl + `&nameStartsWith=${name}`).then((response: any) => setCharacters(response));
@@ -43,7 +59,7 @@ export const List = () => {
     <>
       <Header>
         <img src={marvelLogo} alt="Marvel logo" />
-        <img className="favourite" src={heartIcon} alt="Favourite Icon" />
+        {state.favourites.length}<img className="favourite" src={heartFilledIcon} alt="Favourite Icon" onClick={viewFavourites}/>
       </Header>
       {/* <InfiniteScroll
         dataLength={characters.length}
@@ -64,16 +80,16 @@ export const List = () => {
 
       <CharacterList>
         {characters.map((character) => (
-          <CharacterCard onClick={() => handleClick(character.id)}>
+          <CharacterCard>
             <CharacterImg
               src={
                 character.thumbnail.path + "." + character.thumbnail.extension
               }
-              alt={character.id}
+              alt={character.id} onClick={() => viewDetails(character.id)}
             ></CharacterImg>
             <CharacterNameWrapper>
               <CharacterName>{character.name}</CharacterName>
-              <img className="favourite" src={heartIcon} alt="Favourite Icon" />
+              <img className="favourite" src={state.favourites.includes(character?.id) ? heartFilledIcon : heartIcon } alt="Favourite Icon" onClick={() => setFavourite(character.id)} />
             </CharacterNameWrapper>
           </CharacterCard>
         ))}
@@ -82,3 +98,4 @@ export const List = () => {
     </>
   );
 };
+

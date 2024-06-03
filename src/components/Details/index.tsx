@@ -1,10 +1,9 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { apiKey } from "../../marvelApi.config";
 import { Body, Header } from "../../styles";
-import heartIcon from "../../assets/Heart icon.png";
+import heartIcon from "../../assets/Heart Icon.png";
+import heartFilledIcon from "../../assets/Heart filled icon.png";
 import marvelLogo from "../../assets/Marvel logo.png";
-import store from "../../store";
 import {
   CharacterDescription,
   CharacterImg,
@@ -17,29 +16,29 @@ import {
   ComicWrapper,
 } from "./styles";
 import { fetchData } from "../../utils";
+import { useCharacter } from "../../reducers";
 
 export const Details = () => {
-  const state = store.getState();
+    const { state, dispatch } = useCharacter();
   const [characterData, setCharacterData] = useState<any>(undefined);
   const [characterComicData, setCharacterComicData] = useState<any[]>([]);
-  const characterUrl = `http://gateway.marvel.com/v1/public/characters/${state.character.id}?ts=${apiKey.Timestamp}&apikey=${apiKey.Public}&hash=${apiKey.Hash}`;
-  const characterComicUrl = `http://gateway.marvel.com/v1/public/characters/${state.character.id}/comics?ts=${apiKey.Timestamp}&apikey=${apiKey.Public}&hash=${apiKey.Hash}`;
+  const characterUrl = `http://gateway.marvel.com/v1/public/characters/${state.id}?ts=${apiKey.Timestamp}&apikey=${apiKey.Public}&hash=${apiKey.Hash}`;
+  const characterComicUrl = `http://gateway.marvel.com/v1/public/characters/${state.id}/comics?ts=${apiKey.Timestamp}&apikey=${apiKey.Public}&hash=${apiKey.Hash}`;
 
   useEffect(() => {
-    fetchData(characterUrl).then((response) => {
-      setCharacterData(response[0]);
-    });
-    fetchData(characterComicUrl).then((response) => {
-      console.log(response);
-      setCharacterComicData(response);
-    });
+    fetchData(characterUrl).then((response) => 
+      setCharacterData(response[0])
+    );
+    fetchData(characterComicUrl).then((response) =>
+      setCharacterComicData(response)
+    );
   }, []);
 
   return (
     <>
       <Header>
         <img src={marvelLogo} alt="Marvel logo" />
-        <img className="favourite" src={heartIcon} alt="Favourite Icon" />
+        <img className="favourite" src={state.favourites.includes(characterData?.id) ? heartFilledIcon : heartIcon } alt="Favourite Icon" />
       </Header>
       <Body>
         {characterData && (

@@ -39,13 +39,13 @@ export const CharacterCard = styled.div`
   width: 188.57px;
   height: 245.97px;
   padding: 10px 5px 10px 5px;
-  cursor: pointer;
 `;
 
 export const CharacterImg = styled.img`
   width: 188.57px;
   height: 189.97px;
   border-bottom: 4px solid red;
+  cursor: pointer;
 `;
 
 export const CharacterNameWrapper = styled.div`
@@ -58,6 +58,7 @@ export const CharacterNameWrapper = styled.div`
   & img {
     height: fit-content;
     padding: 16px 16px 24px 16px;
+    cursor: pointer;
   }
 `;
 
