@@ -13,6 +13,20 @@ export const GlobalStyle = createGlobalStyle`
             width: auto;
         }
     }
+
+    &::-webkit-scrollbar {
+      width: 5px;   
+      height: 5px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: none;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background-color: red;
+      border-radius: 3px;
+    }
 `;
 
 export const Header = styled.div`
@@ -22,7 +36,7 @@ export const Header = styled.div`
   padding: 16px 48px 16px 48px;
   display: flex;
   align-items: center;
-  img {   
+  img {
     height: fit-content;
     cursor: pointer;
   }
@@ -43,5 +57,13 @@ export const FavouriteCount = styled.label`
 `;
 
 export const Body = styled.div`
-  height: calc(100% - 84px);
+  height: calc(100% - 52px);
+`;
+
+export const Cut = styled.img`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 24px;
+  width: 24px;
 `;

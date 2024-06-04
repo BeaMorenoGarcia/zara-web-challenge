@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useReducer, useContext } from "react";
 
-interface CharacterState {
+type CharacterState = {
   id: string;
   favourites: string[];
   viewFavourites: boolean;

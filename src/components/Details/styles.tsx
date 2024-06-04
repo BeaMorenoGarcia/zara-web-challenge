@@ -6,6 +6,7 @@ export const CharacterResumeWrapper = styled.div`
   background-color: black;
   display: flex;
   justify-content: center;
+  position: relative;
   @media (min-width: 320px) and (max-width: 480px) {
     display: block;
     height: auto;
@@ -40,7 +41,7 @@ export const CharacterName = styled.label`
   line-height: 46.88px;
   text-align: left;
   color: white;
-  padding: 16px 16px 24px 16px;
+  padding: 24px 32px 24px 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -85,6 +86,10 @@ export const ComicWrapper = styled.div`
 export const ComicCarrousel = styled.div`
   display: flex;
   overflow-y: auto;
+  &::-webkit-scrollbar-thumb {
+    background: red;
+    border-radius: 4px;
+}
 `;
 
 export const ComicCard = styled.div`

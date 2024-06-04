@@ -8,3 +8,12 @@ export const fetchData = async (url: string) => {
     console.error("Error fetching data:", error);
   }
 };
+
+export const debounce = (callback: any, wait: number) => {
+  let timeout: any;
+  return (...args: any) => {
+    const context = this
+    clearTimeout(timeout)
+    timeout = setTimeout(() => callback.apply(context, args), wait)
+  }
+}

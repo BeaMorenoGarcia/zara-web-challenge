@@ -54,10 +54,15 @@ export const CharacterNameWrapper = styled.div`
   justify-content: space-between;
   background-color: black;
   align-items: center;
-  & img {
+  position: relative;
+  & img.favourite {
     height: fit-content;
     padding: 16px 16px 24px 16px;
     cursor: pointer;
+  }
+  & img.cut {
+    height: 12.86px;
+    width: 12.86px;
   }
 `;
 

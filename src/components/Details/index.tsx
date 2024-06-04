@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { apiKeyUrl, baseUrl } from "../../marvelApi.config";
-import { Favourite, FavouriteCount, Header } from "../../styles";
+import { Body, Cut, Favourite, FavouriteCount, Header } from "../../styles";
 import heartIcon from "../../assets/Heart Icon.png";
 import heartFilledIcon from "../../assets/Heart filled icon.png";
 import marvelLogo from "../../assets/Marvel logo.png";
+import cut from "../../assets/Cut.png";
+
 import {
   CharacterDescription,
   CharacterImg,
@@ -69,7 +71,7 @@ export const Details = () => {
       {isLoading ? (
         <Loader></Loader>
       ) : (
-        <>
+        <Body>
           <CharacterResumeWrapper>
             <CharacterImg
               src={
@@ -97,6 +99,7 @@ export const Details = () => {
                 {characterData.description}
               </CharacterDescription>
             </CharacterInfo>
+            <Cut src={cut} alt={"cut" + characterData.id}></Cut>
           </CharacterResumeWrapper>
 
           <ComicWrapper>
@@ -113,11 +116,12 @@ export const Details = () => {
                       loading="lazy"
                     ></ComicImg>
                     {comic.title}
+                    <Cut src={cut} alt={"cut" + comic.id}></Cut>
                   </ComicCard>
                 ))}
             </ComicCarrousel>
           </ComicWrapper>
-        </>
+        </Body>
       )}
     </>
   );
