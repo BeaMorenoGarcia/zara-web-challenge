@@ -22,7 +22,7 @@ const CharacterContext = createContext<{
   dispatch: () => null,
 });
 
-const characterReducer = (
+export const characterReducer = (
   state: CharacterState = initialState,
   action: Action
 ): CharacterState => {

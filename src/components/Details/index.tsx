@@ -37,14 +37,15 @@ export const Details = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetchData(characterDataUrl).then((response) =>
+    fetchData(characterDataUrl).then((response) => {
       setCharacterData(response[0])
+    }
     );
     fetchData(characterComicUrl).then((response) => {
-      setIsLoading(false);
       setCharacterComicData(response);
+      setIsLoading(false);
     });
-  }, [characterDataUrl, characterComicUrl]);
+  }, []);
 
   return (
     <>

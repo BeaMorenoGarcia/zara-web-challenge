@@ -30,7 +30,6 @@ export const List = () => {
   const { state, dispatch } = useCharacter();
   const [characters, setCharacters] = useState<Character[]>([]);
   const [charactersData, setCharactersData] = useState<Character[]>([]);
-  const [charactersFavourites, setCharactersFavourites] = useState<Character[]>([]);
   const [name, setName] = useState<string>("");
   const [url, setUrl] = useState<string>(characterListUrl);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -65,15 +64,6 @@ export const List = () => {
   };
 
   useEffect(() => {
-    setCharactersFavourites(
-      charactersData.filter((character) =>
-        state.favourites.includes(character.id)
-      )
-    );
-    setCharacters(charactersData);
-  }, [charactersData, state.favourites]);
-
-  useEffect(() => {
     setIsLoading(true);
     fetchData(url).then((response: Character[]) => {
       setCharactersData(response);
@@ -82,34 +72,43 @@ export const List = () => {
   }, [url]);
 
   useEffect(() => {
-    if (state.viewFavourites) setCharacters(charactersFavourites);
+    
+    if (state.viewFavourites)
+      setCharacters(
+        charactersData.filter((character) =>
+          state.favourites.includes(character.id)
+        )
+      );
     else setCharacters(charactersData);
-  }, [state.viewFavourites]);
+  }, [charactersData]);
 
   useEffect(() => {
     if (state.viewFavourites) {
       if (name?.length > 0)
         setCharacters(
-          charactersFavourites.filter((character) =>
+          charactersData.filter((character) =>
             character.name.toLowerCase().startsWith(name.toLowerCase())
           )
         );
-      else setCharacters(charactersFavourites);
+      else setCharacters(charactersData);
     } else {
       if (name?.length > 0)
         setUrl(characterListUrl + `&nameStartsWith=${name}`);
-      else setUrl(characterListUrl);
+      else {
+        if(url !== characterListUrl) setUrl(characterListUrl);
+      }
     }
   }, [name]);
 
   useEffect(() => {
     if (state.viewFavourites)
-      setCharactersFavourites(
-        charactersData.filter((character: Character) =>
+      setCharacters(
+        charactersData.filter((character) =>
           state.favourites.includes(character.id)
         )
       );
-  }, [state.favourites]);
+    else setCharacters(charactersData);
+  }, [state.viewFavourites]);
 
   return (
     <>
@@ -121,6 +120,7 @@ export const List = () => {
         />
         <Favourite
           onClick={() => dispatch({ type: "VIEW_FAVOURITES", payload: true })}
+          data-testid="View Favourite"
         >
           <img
             className="favourite"
@@ -161,7 +161,8 @@ export const List = () => {
                         "." +
                         character.thumbnail.extension
                       }
-                      alt={character.id.toString()}
+                      alt={"Img-" + character.id.toString()}
+                      data-testid={"Img-" + character.id.toString()}
                       loading="lazy"
                       onClick={() => viewDetails(character.id)}
                     ></CharacterImg>
@@ -174,7 +175,8 @@ export const List = () => {
                             ? heartFilledIcon
                             : heartIcon
                         }
-                        alt="Favourite Icon"
+                        alt={"Add Favourite-" + character.id}
+                        data-testid={"Add Favourite-" + character.id}
                         onClick={() => setFavourite(character.id)}
                       />
                       <Cut
