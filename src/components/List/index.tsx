@@ -1,6 +1,19 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import InfiniteScroll from "react-infinite-scroll-component";
+
 import { characterListUrl, limit } from "../../marvelApi.config";
+import searchIcon from "../../assets/Search button.png";
+import heartIcon from "../../assets/Heart Icon.png";
+import heartFilledIcon from "../../assets/Heart filled icon.png";
+import marvelLogo from "../../assets/Marvel logo.png";
+import cut from "../../assets/Cut.png";
+import { Body, Cut, Favourite, FavouriteCount, Header } from "../../styles";
+import { debounce, fetchData } from "../../utils";
+import { useCharacter } from "../../reducers";
+import { Loader } from "../Loader";
+import { Character } from "../../types/api";
+
 import {
   CharacterCard,
   CharacterImg,
@@ -11,23 +24,13 @@ import {
   SearchInputWrapper,
   SearchWrapper,
 } from "./styles";
-import InfiniteScroll from "react-infinite-scroll-component";
-import searchIcon from "../../assets/Search button.png";
-import heartIcon from "../../assets/Heart Icon.png";
-import heartFilledIcon from "../../assets/Heart filled icon.png";
-import marvelLogo from "../../assets/Marvel logo.png";
-import cut from "../../assets/Cut.png";
-import { Body, Cut, Favourite, FavouriteCount, Header } from "../../styles";
-import { debounce, fetchData } from "../../utils";
-import { useCharacter } from "../../reducers";
-import Loader from "../Loader";
 
 export const List = () => {
   const navigate = useNavigate();
   const { state, dispatch } = useCharacter();
-  const [characters, setCharacters] = useState<any[]>([]);
-  const [charactersData, setCharactersData] = useState<any[]>([]);
-  const [charactersFavourites, setCharactersFavourites] = useState<any[]>([]);
+  const [characters, setCharacters] = useState<Character[]>([]);
+  const [charactersData, setCharactersData] = useState<Character[]>([]);
+  const [charactersFavourites, setCharactersFavourites] = useState<Character[]>([]);
   const [name, setName] = useState<string>("");
   const [url, setUrl] = useState<string>(characterListUrl);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -35,12 +38,12 @@ export const List = () => {
   const [hasMore, setHasMore] = useState(true);
   const debouncedSetName = debounce((name: string) => setName(name), 500);
 
-  const viewDetails = (characterId: string) => {
+  const viewDetails = (characterId: number) => {
     dispatch({ type: "SELECT", payload: characterId });
     navigate("/details");
   };
 
-  const setFavourite = (id: string) => {
+  const setFavourite = (id: number) => {
     const favourite = [...state.favourites];
     if (favourite.includes(id)) {
       const index = favourite.indexOf(id);
@@ -61,41 +64,48 @@ export const List = () => {
     setIndex((prevIndex) => prevIndex + 1);
   };
 
-  
   useEffect(() => {
-    setCharactersFavourites(charactersData.filter(character => state.favourites.includes(character.id)));
+    setCharactersFavourites(
+      charactersData.filter((character) =>
+        state.favourites.includes(character.id)
+      )
+    );
     setCharacters(charactersData);
   }, [charactersData, state.favourites]);
 
   useEffect(() => {
     setIsLoading(true);
-    fetchData(url).then((response: any) => {
+    fetchData(url).then((response: Character[]) => {
       setCharactersData(response);
       setIsLoading(false);
     });
   }, [url]);
 
   useEffect(() => {
-    if(state.viewFavourites) setCharacters(charactersFavourites);
-    else setCharacters(charactersData)
+    if (state.viewFavourites) setCharacters(charactersFavourites);
+    else setCharacters(charactersData);
   }, [state.viewFavourites]);
 
   useEffect(() => {
-    if(state.viewFavourites) {
-      if (name?.length > 0) setCharacters(charactersFavourites.filter(character => character.name.toLowerCase().startsWith(name.toLowerCase())));
+    if (state.viewFavourites) {
+      if (name?.length > 0)
+        setCharacters(
+          charactersFavourites.filter((character) =>
+            character.name.toLowerCase().startsWith(name.toLowerCase())
+          )
+        );
       else setCharacters(charactersFavourites);
-    }
-    else {
-    if (name?.length > 0) setUrl(characterListUrl + `&nameStartsWith=${name}`);
-    else setUrl(characterListUrl);
-
+    } else {
+      if (name?.length > 0)
+        setUrl(characterListUrl + `&nameStartsWith=${name}`);
+      else setUrl(characterListUrl);
     }
   }, [name]);
 
   useEffect(() => {
     if (state.viewFavourites)
       setCharactersFavourites(
-        charactersData.filter((character: any) =>
+        charactersData.filter((character: Character) =>
           state.favourites.includes(character.id)
         )
       );
@@ -151,7 +161,7 @@ export const List = () => {
                         "." +
                         character.thumbnail.extension
                       }
-                      alt={character.id}
+                      alt={character.id.toString()}
                       loading="lazy"
                       onClick={() => viewDetails(character.id)}
                     ></CharacterImg>
@@ -167,7 +177,11 @@ export const List = () => {
                         alt="Favourite Icon"
                         onClick={() => setFavourite(character.id)}
                       />
-                      <Cut className="cut" src={cut} alt={"cut" + character.id}></Cut>
+                      <Cut
+                        className="cut"
+                        src={cut}
+                        alt={"cut" + character.id}
+                      ></Cut>
                     </CharacterNameWrapper>
                   </CharacterCard>
                 ))}

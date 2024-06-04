@@ -1,18 +1,18 @@
 import { createContext, ReactNode, useReducer, useContext } from "react";
 
 type CharacterState = {
-  id: string;
-  favourites: string[];
+  id: number;
+  favourites: number[];
   viewFavourites: boolean;
 }
 
 const initialState: CharacterState = {
-  id: "-1",
+  id: -1,
   favourites: [],
   viewFavourites: false
 };
 
-type Action = { type: 'SELECT', payload: string } | { type: 'CHANGE_FAVOURITES', payload: string[] } | { type: 'VIEW_FAVOURITES', payload: boolean };
+type Action = { type: 'SELECT', payload: number } | { type: 'CHANGE_FAVOURITES', payload: number[] } | { type: 'VIEW_FAVOURITES', payload: boolean };
 
 const CharacterContext = createContext<{
   state: CharacterState;
@@ -24,7 +24,7 @@ const CharacterContext = createContext<{
 
 const characterReducer = (
   state: CharacterState = initialState,
-  action: { type: string; payload: any}
+  action: Action
 ): CharacterState => {
   switch (action.type) {
     case "SELECT":

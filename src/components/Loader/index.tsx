@@ -30,7 +30,7 @@ const LoadingText = styled.p`
   color: #333;
 `;
 
-const Loader: React.FC = () => {
+export const Loader: React.FC = () => {
   return (
     <LoaderContainer>
       <Spinner />
@@ -38,5 +38,3 @@ const Loader: React.FC = () => {
     </LoaderContainer>
   );
 };
-
-export default Loader;

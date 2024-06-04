@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+
 import { List } from "./components/List";
 import { Details } from "./components/Details";
 import { GlobalStyle } from "./styles";

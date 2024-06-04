@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { apiKeyUrl, baseUrl } from "../../marvelApi.config";
 import { Body, Cut, Favourite, FavouriteCount, Header } from "../../styles";
 import heartIcon from "../../assets/Heart Icon.png";
 import heartFilledIcon from "../../assets/Heart filled icon.png";
 import marvelLogo from "../../assets/Marvel logo.png";
 import cut from "../../assets/Cut.png";
+import { fetchData } from "../../utils";
+import { useCharacter } from "../../reducers";
+import { Loader } from "../Loader";
+import { Character, Comic } from "../../types/api";
 
 import {
   CharacterDescription,
@@ -18,16 +24,12 @@ import {
   ComicWrapper,
   ComicsTitle,
 } from "./styles";
-import { fetchData } from "../../utils";
-import { useCharacter } from "../../reducers";
-import { useNavigate } from "react-router-dom";
-import Loader from "../Loader";
 
 export const Details = () => {
   const { state, dispatch } = useCharacter();
   const navigate = useNavigate();
-  const [characterData, setCharacterData] = useState<any>(undefined);
-  const [characterComicData, setCharacterComicData] = useState<any[]>([]);
+  const [characterData, setCharacterData] = useState<Character>({id: -1, name: "", thumbnail: {path: "", extension: ""}});
+  const [characterComicData, setCharacterComicData] = useState<Comic[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const characterDataUrl = `${baseUrl}/${state.id}?${apiKeyUrl}`;
@@ -79,16 +81,16 @@ export const Details = () => {
                 "." +
                 characterData.thumbnail?.extension
               }
-              alt={characterData.id}
+              alt={characterData?.id.toString()}
               loading="lazy"
             ></CharacterImg>
             <CharacterInfo>
               <CharacterName>
-                {characterData.name}
+                {characterData?.name}
                 <img
                   className="favourite"
                   src={
-                    state.favourites.includes(characterData?.id)
+                    state.favourites.includes(characterData.id)
                       ? heartFilledIcon
                       : heartIcon
                   }
@@ -112,7 +114,7 @@ export const Details = () => {
                       src={
                         comic.thumbnail?.path + "." + comic.thumbnail?.extension
                       }
-                      alt={comic.id}
+                      alt={comic.id.toString()}
                       loading="lazy"
                     ></ComicImg>
                     {comic.title}

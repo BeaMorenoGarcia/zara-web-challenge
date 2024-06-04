@@ -9,11 +9,10 @@ export const fetchData = async (url: string) => {
   }
 };
 
-export const debounce = (callback: any, wait: number) => {
-  let timeout: any;
-  return (...args: any) => {
-    const context = this
+export const debounce = (callback: Function, wait: number) => {
+  let timeout: ReturnType<typeof setTimeout>;
+  return (name: string) => {
     clearTimeout(timeout)
-    timeout = setTimeout(() => callback.apply(context, args), wait)
+    timeout = setTimeout(() => callback(name), wait)
   }
 }
