@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../Loader";
 
 export const Details = () => {
-  const { state } = useCharacter();
+  const { state, dispatch } = useCharacter();
   const navigate = useNavigate();
   const [characterData, setCharacterData] = useState<any>(undefined);
   const [characterComicData, setCharacterComicData] = useState<any[]>([]);
@@ -48,13 +48,20 @@ export const Details = () => {
         <img
           src={marvelLogo}
           alt="Marvel logo"
-          onClick={() => navigate("/list")}
+          onClick={() => {
+            dispatch({ type: "VIEW_FAVOURITES", payload: false });
+            navigate("/list");
+          }}
         />
         <Favourite>
           <img
             className="favourite"
             src={heartFilledIcon}
             alt="Favourite Icon"
+            onClick={() => {
+              dispatch({ type: "VIEW_FAVOURITES", payload: true });
+              navigate("/list");
+            }}
           />
           <FavouriteCount>{state.favourites?.length}</FavouriteCount>
         </Favourite>

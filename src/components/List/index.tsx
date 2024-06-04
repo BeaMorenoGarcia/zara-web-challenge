@@ -36,12 +36,6 @@ export const List = () => {
     navigate("/details");
   };
 
-  const viewFavourites = () => {
-    setCharacters(
-      characters.filter((character) => state.favourites.includes(character.id))
-    );
-  };
-
   const setFavourite = (id: string) => {
     const favourite = [...state.favourites];
     if (favourite.includes(id)) {
@@ -50,7 +44,7 @@ export const List = () => {
     } else {
       favourite.push(id);
     }
-    dispatch({ type: "FAVOURITES", payload: favourite });
+    dispatch({ type: "CHANGE_FAVOURITES", payload: favourite });
   };
 
   const fetchMoreData = () => {
@@ -59,17 +53,18 @@ export const List = () => {
         setCharacters((prevItems) => [...prevItems, ...res]);
         res?.length > 0 ? setHasMore(true) : setHasMore(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
     setIndex((prevIndex) => prevIndex + 1);
   };
 
   useEffect(() => {
     setIsLoading(true);
     fetchData(url).then((response: any) => {
+      if(state.viewFavourites) response = response.filter((character: any) => state.favourites.includes(character.id))
       setCharacters(response);
       setIsLoading(false);
     });
-  }, [url]);
+  }, [url, state.viewFavourites]);
 
   useEffect(() => {
     if (name?.length > 0) setUrl(characterListUrl + `&nameStartsWith=${name}`);
@@ -82,13 +77,9 @@ export const List = () => {
         <img
           src={marvelLogo}
           alt="Marvel logo"
-          onClick={() => {
-            fetchData(characterListUrl).then((response: any) => {
-              setCharacters(response);
-            });
-          }}
+          onClick={() => dispatch({ type: "VIEW_FAVOURITES", payload: false })}
         />
-        <Favourite onClick={viewFavourites}>
+        <Favourite onClick={() => dispatch({ type: "VIEW_FAVOURITES", payload: true })}>
           <img
             className="favourite"
             src={heartFilledIcon}

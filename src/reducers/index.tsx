@@ -3,14 +3,16 @@ import { createContext, ReactNode, useReducer, useContext } from "react";
 interface CharacterState {
   id: string;
   favourites: string[];
+  viewFavourites: boolean;
 }
 
 const initialState: CharacterState = {
   id: "-1",
-  favourites: []
+  favourites: [],
+  viewFavourites: false
 };
 
-type Action = { type: 'SELECT', payload: string } | { type: 'FAVOURITES', payload: string[] };
+type Action = { type: 'SELECT', payload: string } | { type: 'CHANGE_FAVOURITES', payload: string[] } | { type: 'VIEW_FAVOURITES', payload: boolean };
 
 const CharacterContext = createContext<{
   state: CharacterState;
@@ -30,10 +32,16 @@ const characterReducer = (
         ...state,
         id: action.payload
       };
-    case "FAVOURITES": {
+    case "CHANGE_FAVOURITES": {
       return {
         ...state,
         favourites: action.payload
+      }
+    }
+    case "VIEW_FAVOURITES": {
+      return {
+        ...state,
+        viewFavourites: action.payload
       }
     }
     default:

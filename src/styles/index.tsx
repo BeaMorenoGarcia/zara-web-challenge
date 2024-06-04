@@ -26,6 +26,9 @@ export const Header = styled.div`
     height: fit-content;
     cursor: pointer;
   }
+  @media (min-width: 320px) and (max-width: 480px) {
+    padding: 16px;
+  }
 `;
 
 export const Favourite = styled.div`
