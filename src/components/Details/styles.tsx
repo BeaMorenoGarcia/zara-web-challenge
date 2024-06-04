@@ -51,6 +51,17 @@ export const CharacterName = styled.label`
   }
 `;
 
+export const CharacterDescription = styled.label`
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 18.75px;
+  text-align: left;
+
+  text-align: left;
+  color: white;
+  padding: 24px 32px 24px 32px;
+`;
+
 export const ComicsTitle = styled.label`
   font-size: 30px;
   font-weight: 400;
@@ -63,17 +74,6 @@ export const ComicsTitle = styled.label`
   @media (min-width: 320px) and (max-width: 480px) {
     padding: 0px 8px;
   }
-`;
-
-export const CharacterDescription = styled.label`
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 18.75px;
-  text-align: left;
-
-  text-align: left;
-  color: white;
-  padding: 16px 16px 24px 16px;
 `;
 
 export const ComicWrapper = styled.div`
