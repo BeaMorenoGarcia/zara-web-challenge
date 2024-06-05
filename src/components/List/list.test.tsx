@@ -40,24 +40,30 @@ jest.mock("react-router-dom", () => ({
 
 beforeEach(() => {
   jest.spyOn(Utils, 'fetchData').mockResolvedValue(mockData);
-});
+})
 
 afterEach(() => {
   jest.clearAllMocks();
 });
 
-test("renders the List component", () => {
-  const { getByPlaceholderText, getByAltText } = render(
+test("renders the List component", async () => {
+
+  jest.spyOn(Utils, 'fetchData').mockResolvedValue(mockData);
+
+  const { findByText, getByPlaceholderText, getByAltText } = render(
     <Router>
       <List />
     </Router>
   );
+
+  await findByText("2 RESULTS");
 
   expect(getByAltText("Marvel logo")).toBeInTheDocument();
   expect(getByPlaceholderText("SEARCH A CHARACTER...")).toBeInTheDocument();
 });
 
 test("clicking the favourite icon dispatches the correct action", async () => {
+
   const { findByText, getByTestId } = render(
     <Router>
       <List />
@@ -66,28 +72,33 @@ test("clicking the favourite icon dispatches the correct action", async () => {
 
   await findByText("2 RESULTS");
 
-  const favouriteIcon = getByTestId("Add Favourite-101");
+  const favouriteIcon = getByTestId("Add Favourite-1");
   fireEvent.click(favouriteIcon);
 
   expect(mockDispatch).toHaveBeenCalledWith({
     type: "CHANGE_FAVOURITES",
-    payload: [101],
+    payload: [1],
   });
 });
 
-test("clicking the character image navigates to details page", () => {
-  const { getByTestId } = render(
+test("clicking the character image navigates to details page", async () => {
+
+  jest.spyOn(Utils, 'fetchData').mockResolvedValue(mockData);
+
+  const { findByText, getByTestId } = render(
     <Router>
       <List />
     </Router>
   );
 
-  const characterImage = getByTestId("Img-101");
+  await findByText("2 RESULTS");
+
+  const characterImage = getByTestId("Img-1");
   fireEvent.click(characterImage);
 
   expect(mockDispatch).toHaveBeenCalledWith({
     type: "SELECT",
-    payload: 101,
+    payload: 1,
   });
   expect(mockNavigate).toHaveBeenCalledWith("/details");
 });

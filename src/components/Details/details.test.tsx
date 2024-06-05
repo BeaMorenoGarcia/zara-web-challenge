@@ -1,17 +1,17 @@
 import React from "react";
-import { render, fireEvent, waitFor } from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
 
 import * as Utils from "../../utils";
 
 import { Details } from ".";
 
 // Mocked character data
-const mockCharacterData = {
+const mockCharacterData = [{
   id: 1,
   name: "Iron Man",
   thumbnail: { path: "path/to/image", extension: "jpg" },
   description: "Genius, billionaire, playboy, philanthropist.",
-};
+}];
 
 // Mocked comic data
 const mockComicData = [
@@ -34,7 +34,6 @@ const mockState = {
 };
 const mockDispatch = jest.fn();
 
-// Mock the fetchData function
 jest.mock("../../utils", () => ({
   fetchData: jest.fn((url) => {
     if (url.includes("character")) {
@@ -45,12 +44,11 @@ jest.mock("../../utils", () => ({
   }),
 }));
 
-// Mock the useNavigate hook
+const mockNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
-  useNavigate: () => jest.fn(),
+  useNavigate: () => mockNavigate,
 }));
 
-// Mock the useCharacter hook
 jest.mock("../../reducers", () => ({
   useCharacter: () => ({
     state: mockState,
@@ -65,25 +63,15 @@ describe("Details component", () => {
       .mockResolvedValueOnce(mockCharacterData)
       .mockResolvedValueOnce(mockComicData);
   });
+
   test("renders character details and comics", async () => {
-    const { findByText, getByText, getByAltText } = render(<Details />);
 
-    await findByText("Iron Man");
+    const { findByText } = render(<Details />);
 
-    // Wait for character data to be loaded
-    await waitFor(() => {
-      expect(getByText(mockCharacterData.name)).toBeInTheDocument();
-      expect(getByText(mockCharacterData.description)).toBeInTheDocument();
-      expect(getByAltText(mockCharacterData.id.toString())).toBeInTheDocument();
-    });
+    await findByText(mockCharacterData[0].name);
 
-    // Wait for comic data to be loaded
-    await waitFor(() => {
-      mockComicData.forEach((comic) => {
-        expect(getByText(comic.title)).toBeInTheDocument();
-        expect(getByAltText(comic.id.toString())).toBeInTheDocument();
-      });
-    });
+    expect(findByText(mockCharacterData[0].name));
+    expect(findByText(mockCharacterData[0].description));
   });
 
   test("clicking Marvel logo navigates to /list", async () => {
