@@ -12,7 +12,7 @@ export const apiKey = {
 };
 
 
-export const limit = 5;
+export const limit = 50;
 export const baseUrl = `http://gateway.marvel.com/v1/public/characters`
 export const apiKeyUrl = `ts=${apiKey.timestamp}&apikey=${apiKey.public}&hash=${apiKey.hash}`;
 export const limitUrl = `&limit=${limit}`;

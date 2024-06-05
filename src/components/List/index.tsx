@@ -86,11 +86,15 @@ export const List = () => {
     if (state.viewFavourites) {
       if (name?.length > 0)
         setCharacters(
-          charactersData.filter((character) =>
+          characters.filter((character) =>
             character.name.toLowerCase().startsWith(name.toLowerCase())
           )
         );
-      else setCharacters(charactersData);
+      else setCharacters(
+        charactersData.filter((character) =>
+          state.favourites.includes(character.id)
+        )
+      );
     } else {
       if (name?.length > 0)
         setUrl(characterListUrl + `&nameStartsWith=${name}`);
